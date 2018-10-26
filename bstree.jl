@@ -69,6 +69,15 @@ struct bst_levelorder{T}
     root::bst_node{T}
 end
 
+function Base.iterate(iter::bst_node{T}) where {T}
+    Base.iterate(bst_inorder(iter))
+end
+
+function Base.iterate(iter::bst_node{T}, state::Tuple{Int64, Bool, Array{bst_node{T}}}) where {T}
+    Base.iterate(bst_inorder(iter), state)
+end
+    
+
 function Base.iterate(iter::bst_levelorder{T}) where {T}
     q = Array{bst_node{T}}(undef, 50)
     q[1] = iter.root

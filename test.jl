@@ -11,21 +11,21 @@ end
 
 function test()
     tree = build_tree()
-    order = bstree.preorder(tree)
+    order = bstree.bst_preorder(tree)
     for i in order
         println(i)
     end
 
     println()
 
-    order = bstree.inorder(tree)
+    order = bstree.bst_inorder(tree)
     for i in order
         println(i)
     end
 
     println()
 
-    order = bstree.postorder(tree)
+    order = bstree.bst_postorder(tree)
     for i in order
         println(i)
     end
