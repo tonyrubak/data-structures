@@ -53,6 +53,11 @@ function delete(item::T, root::bst_node{T}) where {T}
     end
 end
 
+# Wrappers for determining traversal order
+# Using iterable functions on a tree wrapped in one of these wrappers
+# will cause traversal to occur in that order
+# If a tree is not wrapped in one of these the default traversal
+# order is in order
 struct bst_preorder{T}
     root::bst_node{T}
 end
