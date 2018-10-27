@@ -10,7 +10,7 @@ struct bst_node{T}
 end
    
 
-function Base.in(item::T, tree::bst_node{T}) where {T}
+function Base.in(item, tree::bst_node)
     if item < tree.data
         item in tree.left
     elseif item > tree.data
@@ -24,8 +24,8 @@ function Base.in(item, tree::bst_empty)
     false
 end
 
-function find_succ(root::bst_node{T}) where {T}
-    function find_succ_helper(root::bst_node{T})
+function find_succ(root::bst_node)
+    function find_succ_helper(root::bst_node)
         if typeof(root.left) == bst_empty
             root
         else
@@ -35,7 +35,7 @@ function find_succ(root::bst_node{T}) where {T}
     find_succ_helper(root.right)
 end
 
-function delete(item::T, root::bst_node{T}) where {T}
+function delete(item, root::bst_node)
     if item < root.data
         bst_node(root.data, delete(item, root.left), root.right)
     elseif item > root.data
@@ -53,7 +53,7 @@ function delete(item::T, root::bst_node{T}) where {T}
     end
 end
 
-function insert(item::T, root::bst_node{T}) where {T}
+function insert(item, root::bst_node)
     if item < root.data
         bst_node(root.data, insert(item, root.left), root.right)
     elseif item > root.data
@@ -63,7 +63,7 @@ function insert(item::T, root::bst_node{T}) where {T}
     end
 end
 
-function insert(item::T, root::bst_empty) where {T}
+function insert(item, root::bst_empty)
     bst_node(item, bst_empty(), bst_empty())
 end
 
@@ -88,22 +88,29 @@ struct bst_levelorder{T}
     root::bst_node{T}
 end
 
-function Base.iterate(iter::bst_node{T}) where {T}
+function Base.iterate(iter::bst_node)
     Base.iterate(bst_inorder(iter))
 end
 
-function Base.iterate(iter::bst_node{T}, state::Tuple{Int64, Bool, Array{bst_node{T}}}) where {T}
+function Base.iterate(iter::bst_node, state)
     Base.iterate(bst_inorder(iter), state)
 end
-    
 
-function Base.iterate(iter::bst_levelorder{T}) where {T}
-    q = Array{bst_node{T}}(undef, 50)
+function Base.iterate(::bst_empty)
+    nothing
+end
+
+function Base.iterate(::bst_empty, state)
+    nothing
+end
+
+function Base.iterate(iter::bst_levelorder)
+    q = Array{bst_node}(undef, 50)
     q[1] = iter.root
     Base.iterate(iter, (2, 1, q))
 end
 
-function Base.iterate(iter::bst_levelorder{T}, state::Tuple{Int64, Int64, Array{bst_node{T}}}) where {T}
+function Base.iterate(iter::bst_levelorder, state)
     front = state[1]
     back = state[2]
     q = state[3]
@@ -128,13 +135,13 @@ function Base.iterate(iter::bst_levelorder{T}, state::Tuple{Int64, Int64, Array{
     end
 end
 
-function Base.iterate(iter::bst_postorder{T}) where {T}
-    up = Array{Tuple{bst_node{T}, Int64}}(undef, 50)
+function Base.iterate(iter::bst_postorder)
+    up = Array{Tuple{bst_node, Int64}}(undef, 50)
     up[1] = (iter.root, 0)
     Base.iterate(iter, (2, up))
 end
 
-function Base.iterate(iter::bst_postorder{T}, state::Tuple{Int64, Array{Tuple{bst_node{T}, Int64}}}) where{T}
+function Base.iterate(iter::bst_postorder, state)
     top = state[1]
     up = state[2]
 
@@ -169,12 +176,12 @@ function Base.iterate(iter::bst_postorder{T}, state::Tuple{Int64, Array{Tuple{bs
     end
 end
 
-function Base.iterate(iter::bst_inorder{T}) where {T}
-    up = Array{bst_node{T}}(undef, 50)
+function Base.iterate(iter::bst_inorder)
+    up = Array{bst_node}(undef, 50)
     Base.iterate(iter, (-1, false, up))
 end
 
-function Base.iterate(iter::bst_inorder{T}, state::Tuple{Int64, Bool, Array{bst_node{T}}}) where {T}
+function Base.iterate(iter::bst_inorder, state)
     top = state[1]
     which_loop = state[2]
     up = state[3]
@@ -210,13 +217,13 @@ function Base.iterate(iter::bst_inorder{T}, state::Tuple{Int64, Bool, Array{bst_
     end
 end
 
-function Base.iterate(iter::bst_preorder{T}) where {T}
-    up = Array{bst_node{T}}(undef, 50)
+function Base.iterate(iter::bst_preorder)
+    up = Array{bst_node}(undef, 50)
     up[1] = iter.root
     Base.iterate(iter, (2, up))
 end
 
-function Base.iterate(iter::bst_preorder{T}, state::Tuple{Int64, Array{bst_node{T}}}) where {T}
+function Base.iterate(iter::bst_preorder, state)
     top = state[1]
     up = state[2]
     if top == 1
@@ -238,7 +245,9 @@ function Base.iterate(iter::bst_preorder{T}, state::Tuple{Int64, Array{bst_node{
     end
 end
 
-function preorder_r(root::bst_node{T}) where {T}
+function Base.length(root::bst_node)
+
+function preorder_r(root::bst_node)
     println(root.data)
     preorder_r(root.left)
     preorder_r(root.right)
@@ -246,7 +255,7 @@ end
 
 function preorder_r(::bst_empty) end
 
-function inorder_r(root::bst_node{T}) where {T}
+function inorder_r(root::bst_node)
     inorder_r(root.left)
     println(root.data)
     inorder_r(root.right)
@@ -254,7 +263,7 @@ end
 
 function inorder_r(::bst_empty) end
 
-function postorder_r(root::bst_node{T}) where {T}
+function postorder_r(root::bst_node)
     postorder_r(root.left)
     postorder_r(root.right)
     println(root.data)
