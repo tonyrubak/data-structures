@@ -246,6 +246,56 @@ function Base.iterate(iter::bst_preorder, state)
 end
 
 function Base.length(root::bst_node)
+    len = 0
+    for i in bst_preorder(root)
+        len += 1
+    end
+    len
+end
+
+function Base.length(::bst_empty)
+    0
+end
+
+function Base.length(iter::bst_preorder)
+    length(iter.root)
+end
+
+function Base.length(iter::bst_postorder)
+    length(iter.root)
+end
+
+function Base.length(iter::bst_inorder)
+    length(iter.root)
+end
+
+function Base.length(iter::bst_levelorder)
+    length(iter.root)
+end
+
+function Base.eltype(root::bst_node{T}) where {T}
+    T
+end
+
+function Base.eltype(::bst_empty)
+    Any
+end
+
+function Base.eltype(iter::bst_preorder{T}) where {T}
+    T
+end
+
+function Base.eltype(iter::bst_inorder{T}) where {T}
+    T
+end
+
+function Base.eltype(iter::bst_postorder{T}) where {T}
+    T
+end
+
+function Base.eltype(iter::bst_levelorder{T}) where {T}
+    T
+end
 
 function preorder_r(root::bst_node)
     println(root.data)

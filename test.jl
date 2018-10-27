@@ -36,4 +36,14 @@ function test()
     for i in order
         println(i)
     end
+
+    println()
+
+    for i in tree
+        println(i)
+    end
+
+    println()
+
+    println(length(bstree.bst_preorder(tree)))
 end
