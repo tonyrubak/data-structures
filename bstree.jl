@@ -67,6 +67,14 @@ function insert(item, root::bst_empty)
     bst_node(item, bst_empty(), bst_empty())
 end
 
+function depth(root::bst_node)
+    max(depth(root.left), depth(root.right)) + 1
+end
+
+function depth(::bst_empty)
+    0
+end
+
 # Wrappers for determining traversal order
 # Using iterable functions on a tree wrapped in one of these wrappers
 # will cause traversal to occur in that order
