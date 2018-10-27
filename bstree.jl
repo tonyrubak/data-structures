@@ -53,6 +53,20 @@ function delete(item::T, root::bst_node{T}) where {T}
     end
 end
 
+function insert(item::T, root::bst_node{T}) where {T}
+    if item < root.data
+        bst_node(root.data, insert(item, root.left), root.right)
+    elseif item > root.data
+        bst_node(root.data, root.left, insert(item, root.right))
+    else
+        root
+    end
+end
+
+function insert(item::T, root::bst_empty) where {T}
+    bst_node(item, bst_empty(), bst_empty())
+end
+
 # Wrappers for determining traversal order
 # Using iterable functions on a tree wrapped in one of these wrappers
 # will cause traversal to occur in that order
@@ -247,18 +261,4 @@ function postorder_r(root::bst_node{T}) where {T}
 end
 
 function postorder_r(::bst_empty) end
-
-function insert(item::T, root::bst_node{T}) where {T}
-    if item < root.data
-        bst_node(root.data, insert(item, root.left), root.right)
-    elseif item > root.data
-        bst_node(root.data, root.left, insert(item, root.right))
-    else
-        root
-    end
-end
-
-function insert(item::T, root::bst_empty) where {T}
-    bst_node(item, bst_empty(), bst_empty())
-end
 end
